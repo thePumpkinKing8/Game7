@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 334.47 62.84">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #2a220c;
+        font-family: LaMachineCompany, 'La Machine Company';
+        font-size: 60px;
+      }
+
+      .cls-2 {
+        fill: #f39800;
+      }
+    </style>
+  </defs>
+  <g id="_图层_1" data-name="图层 1">
+    <rect class="cls-2" y="4.32" width="334.47" height="55.16"/>
+    <text class="cls-1" transform="translate(2.93 51.01) scale(.76 1)"><tspan x="0" y="0">HOMEWRECKER</tspan></text>
+  </g>
+</svg>

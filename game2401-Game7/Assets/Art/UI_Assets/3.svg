@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 121.3 27">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #c9a063;
+        stroke: #9e6600;
+        stroke-miterlimit: 10;
+        stroke-width: 3px;
+      }
+
+      .cls-2 {
+        fill: #2a220c;
+        font-family: LaMachineCompany, 'La Machine Company';
+        font-size: 18px;
+      }
+    </style>
+  </defs>
+  <g id="_图层_1" data-name="图层 1">
+    <g>
+      <polygon class="cls-1" points="2.7 1.8 1.6 19.2 33.6 19.2 21.7 25.3 118.9 22.6 109.1 1.8 103.3 3.3 98.3 1.8 2.7 1.8"/>
+      <text class="cls-2" transform="translate(42.7 18.8) scale(.8 1)"><tspan x="0" y="0">PLAY</tspan></text>
+    </g>
+  </g>
+</svg>
