@@ -15,6 +15,7 @@ public class NPC : MonoBehaviour
 
     [SerializeField] private GameObject _visionCone;
     private Rigidbody2D _rb;
+    private Transform _playerTarget;
     private void Awake()
     {
         _path = GetComponent<AIPath>();
@@ -35,7 +36,7 @@ public class NPC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       // SetState(OnPatrol());
+       SetState(OnPatrol());
     }
 
     // Update is called once per frame
@@ -48,19 +49,49 @@ public class NPC : MonoBehaviour
     {
         yield return new WaitForFixedUpdate();
         _destinationSetter.target = _patrolPath[_routeIndex];
-        if(_routeIndex == _patrolPath.Length)
+        Debug.Log(_routeIndex);
+        SetState(MovingPatrol());
+    }
+
+    IEnumerator MovingPatrol()
+    {
+        
+        while(true)
         {
-            _routeIndex = 0;
-        }
-        else
-        {
-            _routeIndex++;
+            yield return new WaitForFixedUpdate();
+            if (transform.position == _patrolPath[_routeIndex].position)
+            {
+                if (_routeIndex == _patrolPath.Length - 1)
+                {
+                    _routeIndex = 0;
+                }
+                else
+                {
+                    _routeIndex++;
+                }
+                SetState(OnPatrol());
+            }
         }
     }
+
+    IEnumerator Chasing()
+    {
+        while(true)
+        {
+            yield return new WaitForFixedUpdate();
+            _destinationSetter.target = _playerTarget;
+        }
+    }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("hi");
+        if(collision.gameObject.tag == "Player")
+        {
+            _playerTarget = collision.gameObject.GetComponent<Transform>();
+            SetState(Chasing());
+        }
     }
 
 

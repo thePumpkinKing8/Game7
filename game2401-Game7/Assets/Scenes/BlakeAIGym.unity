@@ -26397,7 +26397,7 @@ MonoBehaviour:
   endReachedDistance: 0.2
   alwaysDrawGizmos: 1
   slowWhenNotFacingTarget: 1
-  whenCloseToDestination: 0
+  whenCloseToDestination: 1
   constrainInsideGraph: 1
 --- !u!114 &1183647963
 MonoBehaviour:
@@ -35498,82 +35498,82 @@ MonoBehaviour:
   - position: {x: 9.99708, y: 1.9682031, z: 0}
     color: {r: 0, g: 0, b: 0, a: 1}
     uv: {x: 0, y: 0}
-  - position: {x: -0.0068, y: 0.0038, z: 0}
+  - position: {x: -0.0023, y: -0.011, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  - position: {x: -0.1033, y: -0.4868, z: 0}
+  - position: {x: 0.0026, y: -0.0273, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  - position: {x: 9.8951, y: -2.4528, z: 0}
+  - position: {x: -0.0888, y: -0.4993, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  - position: {x: 9.9925, y: -2.4622, z: 0}
+  - position: {x: 9.9053, y: -2.4358, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  - position: {x: 10.0899, y: -2.4524, z: 0}
+  - position: {x: 10.0027, y: -2.4449, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  - position: {x: 10.1835, y: -2.4239, z: 0}
+  - position: {x: 10.1001, y: -2.4349, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  - position: {x: 10.2698, y: -2.3777, z: 0}
+  - position: {x: 10.1936, y: -2.4061, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  - position: {x: 10.3454, y: -2.3155, z: 0}
+  - position: {x: 10.2797, y: -2.3596, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  - position: {x: 10.4074, y: -2.2399, z: 0}
+  - position: {x: 10.3552, y: -2.2973, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  - position: {x: 10.4535, y: -2.1535, z: 0}
+  - position: {x: 10.417, y: -2.2214, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  - position: {x: 10.482, y: -2.0599, z: 0}
+  - position: {x: 10.4629, y: -2.135, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  - position: {x: 10.4916, y: -1.9617, z: 0}
+  - position: {x: 10.491, y: -2.0412, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  - position: {x: 10.4873, y: 1.966, z: 0}
+  - position: {x: 10.5004, y: -1.9453, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  - position: {x: 10.4776, y: 2.0634, z: 0}
+  - position: {x: 10.5033, y: 1.9766, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  - position: {x: 10.4491, y: 2.1571, z: 0}
+  - position: {x: 10.4938, y: 2.074, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  - position: {x: 10.403, y: 2.2434, z: 0}
+  - position: {x: 10.4655, y: 2.1677, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  - position: {x: 10.3409, y: 2.319, z: 0}
+  - position: {x: 10.4195, y: 2.2541, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  - position: {x: 10.2653, y: 2.3811, z: 0}
+  - position: {x: 10.3576, y: 2.3299, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  - position: {x: 10.179, y: 2.4273, z: 0}
+  - position: {x: 10.282, y: 2.3921, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  - position: {x: 10.0854, y: 2.4558, z: 0}
+  - position: {x: 10.1958, y: 2.4384, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  - position: {x: 9.988, y: 2.4655, z: 0}
+  - position: {x: 10.1023, y: 2.4671, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  - position: {x: 9.8905, y: 2.456, z: 0}
+  - position: {x: 10.0049, y: 2.477, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  - position: {x: -0.0949, y: 0.4863, z: 0}
+  - position: {x: 9.9059, y: 2.4674, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  - position: {x: -0.0009, y: 0.0102, z: 0}
+  - position: {x: -0.0997, y: 0.4794, z: 0}
     color: {r: 0, g: 0, b: 0, a: 0}
     uv: {x: 0, y: 0}
-  m_Triangles: 000001000400020004000300060009000900060009000a00060007000b0006000a000b0007000b000c0007000c000d0007000d000e0007000e000f0007000f001000070010001100070011001200070012001300070013001400070008001500070014001500080015001600080016001700080017001800080018001900080019001a0008001a001b0008001b001c0008001c001d0008001d001e00080005001f0008001e001f0005000600200005001f002000090006002000200006000500
+  m_Triangles: 000001000400020004000300050009000900050006000a00050009000a0006000a000b00060007000c0006000b000c0007000c000d0007000d000e0007000e000f0007000f001000070010001100070011001200070012001300070013001400070014001500070008001600070015001600080016001700080017001800080018001900080019001a0008001a001b0008001b001c0008001c001d0008001d001e0008001e001f0008000500200008001f002000090005000800090020000800
   m_LocalBounds:
-    m_Center: {x: 5.19415, y: 0.001650095, z: 0}
-    m_Extent: {x: 5.29745, y: 2.46385, z: 0}
+    m_Center: {x: 5.2018, y: 0.016049981, z: 0}
+    m_Extent: {x: 5.3015, y: 2.46095, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -35641,7 +35641,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1587384516}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.97, y: 0, z: 0}
+  m_LocalPosition: {x: 12.67, y: 1.19, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
