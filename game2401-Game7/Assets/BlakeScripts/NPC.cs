@@ -6,6 +6,7 @@ public class NPC : MonoBehaviour
 {
     private AIPath _path;
     private AIDestinationSetter _destinationSetter;
+    private Seeker _seeker;
     [SerializeField] private Transform[] _patrolPath;
     private int _routeIndex = 0; //the index of the transform the NPC should path to while on patrol
 
@@ -16,8 +17,11 @@ public class NPC : MonoBehaviour
     [SerializeField] private GameObject _visionCone;
     private Rigidbody2D _rb;
     private Transform _playerTarget;
+
+    private Vector3 _originalPosition;
     private void Awake()
     {
+        _seeker = GetComponent<Seeker>();
         _path = GetComponent<AIPath>();
         _destinationSetter = GetComponent<AIDestinationSetter>();
         _path.maxSpeed = _speed;
@@ -37,12 +41,19 @@ public class NPC : MonoBehaviour
     void Start()
     {
        SetState(OnPatrol());
+        _originalPosition = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //_visionCone.transform.LookAt(_destinationSetter.target.position);
+        Vector3 moveDirection = gameObject.transform.position - _originalPosition;
+        if (moveDirection != Vector3.zero)
+        {
+            float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+            _visionCone.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        }
+        _originalPosition = transform.position;
     }
 
     IEnumerator OnPatrol()
@@ -83,6 +94,18 @@ public class NPC : MonoBehaviour
         }
     }
 
+    IEnumerator MoveToSearch()
+    {
+        while (true)
+        {
+            yield return new WaitForFixedUpdate();
+            if (transform.position == _destinationSetter.target.position)
+            {
+                SetState(OnPatrol());
+            }
+        }
+    }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -94,5 +117,11 @@ public class NPC : MonoBehaviour
         }
     }
 
+
+    public void Investigate(Transform transform)
+    {
+        _destinationSetter.target = transform;
+        SetState(MoveToSearch());
+    }
 
 }
