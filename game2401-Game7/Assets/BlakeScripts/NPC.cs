@@ -4,6 +4,7 @@ using UnityEngine;
 using Pathfinding;
 public class NPC : MonoBehaviour
 {
+    private GameObject _player;
     private AIPath _path;
     private AIDestinationSetter _destinationSetter;
     private Seeker _seeker;
@@ -18,16 +19,30 @@ public class NPC : MonoBehaviour
     [SerializeField] private GameObject _visionCone;
     private Rigidbody2D _rb;
     private Transform _playerTarget;
-    private bool _playerVisible;
-
     private Vector3 _originalPosition;
     private void Awake()
     {
+        _player = GameObject.Find("Player"); // Reference to the player
         _seeker = GetComponent<Seeker>();
         _path = GetComponent<AIPath>();
         _destinationSetter = GetComponent<AIDestinationSetter>();
         _path.maxSpeed = _speed;
         _rb = GetComponent<Rigidbody2D>();
+    }
+
+    private bool PlayerIsVisible(PlayerController player) // Casts a ray to see if the AI can see the player
+    {
+        bool playerVisible = true;
+        Vector2 direction = player.transform.position - this.transform.position;
+        float distance = direction.magnitude;
+        direction.Normalize();
+        RaycastHit2D hit = new RaycastHit2D();
+
+        if(Physics2D.Raycast(this.transform.position, direction, distance, LayerMask.GetMask("Obstacle")))
+        {
+            playerVisible = false;
+        }
+        return playerVisible;
     }
 
     private void SetState(IEnumerator newState) //when we change states, we stop our previous coroutine and then initialize a new one. Technically this can be done with "StopAllCoroutines()" because we only have one coroutine running, but in the case that we had more, we will only a stop a specific coroutine.
@@ -48,7 +63,7 @@ public class NPC : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    { 
+    {
         Vector3 moveDirection = gameObject.transform.position - _originalPosition; //makes the vision cone follow the ai's direction
         if (moveDirection != Vector3.zero)
         {
@@ -56,6 +71,7 @@ public class NPC : MonoBehaviour
             _visionCone.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
         _originalPosition = transform.position;
+
     }
 
     IEnumerator OnPatrol() //sets the target within the ai's patrol path
@@ -91,18 +107,17 @@ public class NPC : MonoBehaviour
     IEnumerator Chasing() //Ai chases the player for as long as they remain visible to it
     {
         _path.maxSpeed = _chaseSpeed;
-        while (_playerVisible == true)
-        {
-            yield return new WaitForFixedUpdate();
-            if (_playerTarget.GetComponent<PlayerController>().Hidden == true)
-            {
-                _playerVisible = false;
-            }
-            else
-            {
+        //while (_playerVisible == true)
+        //{
+        //    yield return new WaitForFixedUpdate();
+        //    if (_playerTarget.GetComponent<PlayerController>().Hidden == true)
+        //    {
+        //        _playerVisible = false;
+        //    }
+        //    else
+           
                 _destinationSetter.target.position = _playerTarget.position;
-            }           
-        }
+                       
         yield return new WaitForSeconds(2);
 
         SetState(MoveToSearch());
@@ -126,29 +141,44 @@ public class NPC : MonoBehaviour
     }
 
 
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    //Debug.Log("hi");
+    //    if(collision.gameObject.tag == "Player")
+    //    {
+    //        _playerTarget = collision.gameObject.GetComponent<Transform>();
+    //        _playerVisible = true;
+    //        SetState(Chasing());
+    //    }
+    //}
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //Debug.Log("hi");
-        if(collision.gameObject.tag == "Player")
+        PlayerController player = _player.GetComponent<PlayerController>();
+
+        if(PlayerIsVisible(player))
         {
             _playerTarget = collision.gameObject.GetComponent<Transform>();
-            _playerVisible = true;
             SetState(Chasing());
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        PlayerController player = _player.GetComponent<PlayerController>();
+
         if (collision.gameObject.tag == "Player")
         {
-            _playerVisible = false;
+            PlayerIsVisible(player);
         }
     }
 
 
     public void Investigate(Vector2 direction) // function triggered by "noises"
     {
-        if(_playerVisible == false) //prevents player from stopping a chase by making noise
+        PlayerController player = _player.GetComponent<PlayerController>();
+
+        if (!PlayerIsVisible(player)) //prevents player from stopping a chase by making noise
         {
             _destinationSetter.target.position = direction;
             SetState(MoveToSearch());
