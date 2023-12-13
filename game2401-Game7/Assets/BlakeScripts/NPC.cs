@@ -106,7 +106,25 @@ public class NPC : MonoBehaviour
 
     IEnumerator Chasing() //Ai chases the player for as long as they remain visible to it
     {
-        _path.maxSpeed = _chaseSpeed;
+        PlayerController player = _player.GetComponent<PlayerController>();
+
+        if (PlayerIsVisible(player))
+        {
+            _path.maxSpeed = _chaseSpeed;
+            _destinationSetter.target.position = _playerTarget.position;
+        }
+        else
+        {
+            yield return new WaitForSeconds(2);
+
+            SetState(MoveToSearch());
+            if (_path.reachedEndOfPath == true)
+            {
+                SetState(OnPatrol());
+            }
+        }
+
+           
         //while (_playerVisible == true)
         //{
         //    yield return new WaitForFixedUpdate();
@@ -116,15 +134,9 @@ public class NPC : MonoBehaviour
         //    }
         //    else
            
-                _destinationSetter.target.position = _playerTarget.position;
-                       
-        yield return new WaitForSeconds(2);
 
-        SetState(MoveToSearch());
-        if (_path.reachedEndOfPath == true)
-        {
-            SetState(OnPatrol());
-        }
+                       
+        
     }
 
     IEnumerator MoveToSearch()  //Ai moves to investigate noises

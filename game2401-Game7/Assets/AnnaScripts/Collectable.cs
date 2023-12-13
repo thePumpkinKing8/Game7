@@ -5,7 +5,7 @@ using UnityEngine;
 public class Collectable : Interactable
 {
     [SerializeField] private int _value = 100;
-    [SerializeField] private float _soundSize = 50f;
+    [SerializeField] private float _soundSize = 10f;
     public override void Interact()
     {
         base.Interact();
