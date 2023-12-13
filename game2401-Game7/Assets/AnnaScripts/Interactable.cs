@@ -5,11 +5,11 @@ using UnityEngine.Events;
 
 public class Interactable : MonoBehaviour
 {
-    public UnityEvent onInteract;
+    public UnityEvent<GameObject> onInteract;
 
     public virtual void Interact()
     {
-        onInteract.Invoke();
+        onInteract.Invoke(gameObject);
     }
 }
 
