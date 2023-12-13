@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2953152181341405415}
   - component: {fileID: 7677985464750002720}
   - component: {fileID: 1622130424669602903}
+  - component: {fileID: 7232552893124699478}
   m_Layer: 0
   m_Name: TopDownHouse_SmallItems_24
   m_TagString: Untagged
@@ -111,3 +112,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &7232552893124699478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392527767091138399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46ee0bdd4b611cc46a593ea707a8fecb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onInteract:
+    m_PersistentCalls:
+      m_Calls: []
+  _value: 100
+  _soundSize: 50

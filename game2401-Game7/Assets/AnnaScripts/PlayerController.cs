@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 5f;
     private float oldSpeed;
 
-    public bool Hidden;
+    [HideInInspector] public bool Hidden;
     private Vector2 _position;
 
     private Animator _animator;
@@ -106,10 +106,12 @@ public class PlayerController : MonoBehaviour
             transform.position = _position;
             GetComponent<Collider2D>().enabled = true;
             moveSpeed = oldSpeed;
+            _spriteRenderer.sortingOrder = 2;
         }
         else
         {
             Hidden = true;
+            _spriteRenderer.sortingOrder=0;
             GetComponent<Collider2D>().enabled = false;
             _position = transform.position;
             transform.position = _gameObject.transform.position;
