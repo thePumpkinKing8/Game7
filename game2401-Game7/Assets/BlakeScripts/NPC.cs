@@ -15,6 +15,7 @@ public class NPC : MonoBehaviour
 
     [SerializeField] private float _speed = 1f;
     [SerializeField] private float _chaseSpeed = 4f;
+    [SerializeField] private float _searchTime = 2f;
 
     [SerializeField] private GameObject _visionCone;
     private Rigidbody2D _rb;
@@ -32,6 +33,10 @@ public class NPC : MonoBehaviour
 
     private bool PlayerIsVisible(PlayerController player) // Casts a ray to see if the AI can see the player
     {
+        if(player.Hidden == true)
+        {
+            return false;
+        }
         bool playerVisible = true;
         Vector2 direction = player.transform.position - this.transform.position;
         float distance = direction.magnitude;
@@ -57,7 +62,7 @@ public class NPC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       SetState(OnPatrol());
+        SetState(Search());
         _originalPosition = transform.position;
     }
 
@@ -76,6 +81,7 @@ public class NPC : MonoBehaviour
 
     IEnumerator OnPatrol() //sets the target within the ai's patrol path
     {
+        Debug.Log("patrolling");
         _path.maxSpeed = _speed;
         yield return new WaitForFixedUpdate();
         _destinationSetter.target = _patrolPath[_routeIndex];
@@ -106,23 +112,26 @@ public class NPC : MonoBehaviour
 
     IEnumerator Chasing() //Ai chases the player for as long as they remain visible to it
     {
+        Debug.Log("chasing");
         PlayerController player = _player.GetComponent<PlayerController>();
-
-        if (PlayerIsVisible(player))
+        while(true)
         {
-            _path.maxSpeed = _chaseSpeed;
-            _destinationSetter.target.position = _playerTarget.position;
-        }
-        else
-        {
-            yield return new WaitForSeconds(2);
-
-            SetState(MoveToSearch());
-            if (_path.reachedEndOfPath == true)
+            yield return new WaitForFixedUpdate();
+            if (PlayerIsVisible(player))
             {
-                SetState(OnPatrol());
+                _path.maxSpeed = _chaseSpeed;
+                _destinationSetter.target = _player.transform;
+            }
+            else
+            {
+                yield return new WaitForSeconds(2);
+                if(!PlayerIsVisible(player))
+                {
+                    SetState(Search());
+                }
             }
         }
+       
 
            
         //while (_playerVisible == true)
@@ -141,15 +150,23 @@ public class NPC : MonoBehaviour
 
     IEnumerator MoveToSearch()  //Ai moves to investigate noises
     {
+        Debug.Log("investigate");
         _path.maxSpeed = _speed;
         while (true)
         {
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
             if (_path.reachedEndOfPath == true)
             {
-                SetState(OnPatrol());
+                SetState(Search());
             }
         }
+    }
+
+    IEnumerator Search() 
+    {
+        Debug.Log("searching");
+        yield return new WaitForSeconds(_searchTime);
+        SetState(OnPatrol());
     }
 
 
@@ -170,7 +187,6 @@ public class NPC : MonoBehaviour
 
         if(PlayerIsVisible(player))
         {
-            _playerTarget = collision.gameObject.GetComponent<Transform>();
             SetState(Chasing());
         }
     }
