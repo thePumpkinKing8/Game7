@@ -61,4 +61,19 @@ public class GameManager : MonoBehaviour
         Debug.Log("next scene");
     }
 
+    public void Lose()
+    {
+        StartCoroutine(LoseGame());
+    }
+
+    IEnumerator LoseGame()
+    {
+        Time.timeScale = 0f;
+        AudioManager.Instance.PlayCaught();
+        yield return new WaitForSecondsRealtime(1.5f);
+        Time.timeScale = 0f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name); 
+
+    }
+
 }

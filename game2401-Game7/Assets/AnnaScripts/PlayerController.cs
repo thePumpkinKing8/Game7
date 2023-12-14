@@ -93,6 +93,7 @@ public class PlayerController : MonoBehaviour
             
         }
         moveSpeed = oldSpeed;
+        AudioManager.Instance.StopRummage();
     }
 
 

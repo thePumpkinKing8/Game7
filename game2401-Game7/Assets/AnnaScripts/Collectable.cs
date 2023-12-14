@@ -6,12 +6,21 @@ public class Collectable : Interactable
 {
     [SerializeField] private int _value = 100;
     [SerializeField] private float _soundSize = 10f;
+    [SerializeField] private bool _isSquishy = false;   
     public override void Interact()
     {
         base.Interact();
         Debug.Log("Collectible collected!");
         GameManager.Instance.UpdateScore(_value);
         MakeNoise();
+        if(_isSquishy)
+        {
+            AudioManager.Instance.PlayFruit();
+        }
+        else
+        {
+            AudioManager.Instance.PlayPickUp();
+        }
         Destroy(gameObject);
     }
 

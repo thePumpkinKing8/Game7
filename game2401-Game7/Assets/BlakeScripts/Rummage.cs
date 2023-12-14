@@ -11,6 +11,7 @@ public class Rummage : Interactable
         Debug.Log("rummaging");
         GameManager.Instance.UpdateScore(_value);
         MakeNoise();
+        AudioManager.Instance.PlayRummage();
     }
 
     private void MakeNoise()
