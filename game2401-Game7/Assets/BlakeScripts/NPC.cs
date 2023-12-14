@@ -18,6 +18,8 @@ public class NPC : MonoBehaviour
     [SerializeField] private float _searchTime = 2f;
 
     [SerializeField] private GameObject _visionCone;
+    private float _coneLength = 11.0f;
+
     private Rigidbody2D _rb;
     private Transform _playerTarget;
     private Vector3 _originalPosition;
@@ -73,10 +75,21 @@ public class NPC : MonoBehaviour
         if (moveDirection != Vector3.zero)
         {
             float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-            _visionCone.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            _visionCone.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward); //change to lerp
         }
         _originalPosition = transform.position;
+        ConeScale(moveDirection);
+    }
 
+    void ConeScale(Vector3 moveDirection)
+    {
+        RaycastHit2D hit = new RaycastHit2D();
+        hit = Physics2D.Raycast(this.transform.position, moveDirection, _coneLength, LayerMask.GetMask("Obstacle"));
+        if(hit)
+        {
+            float distanceScale = (hit.transform.position - transform.position).magnitude/11.0f;
+            _visionCone.transform.localScale = new Vector3 (distanceScale, distanceScale, distanceScale);
+        }
     }
 
     IEnumerator OnPatrol() //sets the target within the ai's patrol path
@@ -142,10 +155,7 @@ public class NPC : MonoBehaviour
         //        _playerVisible = false;
         //    }
         //    else
-           
-
-                       
-        
+                 
     }
 
     IEnumerator MoveToSearch()  //Ai moves to investigate noises

@@ -17,7 +17,7 @@ public class Collectable : Interactable
 
     private void MakeNoise()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position,_soundSize);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, _soundSize);
         foreach (Collider2D collider in colliders)
         {
             NPC enemy = collider.GetComponent<NPC>();
