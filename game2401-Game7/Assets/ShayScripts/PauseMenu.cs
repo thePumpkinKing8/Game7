@@ -29,7 +29,7 @@ public class PauseMenu : MonoBehaviour
         _resumeButton = GameObject.Find("Resume_Button"); // Reference to the resume button
         _mainMenuButton = GameObject.Find("MainMenu_Button"); // Reference to the main menu button
         _exitButton = GameObject.Find("Quit_Button"); // Reference to the exit button
-        _pauseMenuDisplay = GameObject.Find("Canvas_Paused"); // Reference to the pause menu display
+        
     }
 
     void Start()
@@ -40,13 +40,16 @@ public class PauseMenu : MonoBehaviour
 
     void Update()
     {
-        if (_gamePaused)
+        if(Input.GetKeyDown(KeyCode.Escape))
         {
-          _player?.SetActive(false); // Deactivate the Player object if it exists in the scene. Keeps the player character from recieving any inputs while the game is paused.
-        }
-        else if (!_gamePaused)
-        {
-           _player?.SetActive(true); // Activate the Player object if it exists in the scene
+            if(_gamePaused)
+            {
+                GameResume();
+            }
+            else
+            {
+                GamePause();
+            }
         }
     }
 
@@ -73,27 +76,24 @@ public class PauseMenu : MonoBehaviour
 
     public void GamePause()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            _gamePaused = true;
+        _pauseMenuDisplay?.SetActive(true);
+         _gamePaused = true;
 
-            OpenMenu();
+         OpenMenu();
 
-            Time.timeScale = 0f; // Freezes time
+         Time.timeScale = 0f; // Freezes time
 
-        }
+       
     }
 
     public void GameResume()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            _gamePaused = false;
+        _pauseMenuDisplay?.SetActive(false);
+        _gamePaused = false;
 
             CloseMenu();
 
             Time.timeScale = 1f; // Resumes time
-        }
 
     }
 

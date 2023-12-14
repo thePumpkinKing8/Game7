@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
         {
             return _instance;
         }
-
     }
 
     [SerializeField] private int _maxScore = 1000;
@@ -59,6 +58,7 @@ public class GameManager : MonoBehaviour
     public void NextScene()
     {
         Debug.Log("next scene");
+        _score = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -73,8 +73,7 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.PlayCaught();
         yield return new WaitForSecondsRealtime(1.5f);
         Time.timeScale = 1f;
+        _score = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name); 
-
     }
-
 }

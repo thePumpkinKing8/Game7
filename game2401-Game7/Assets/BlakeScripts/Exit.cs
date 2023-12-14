@@ -11,7 +11,7 @@ public class Exit : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject != gameObject)
+        if (other.tag == "Player")
         {
             GameManager.Instance.NextScene();
         }

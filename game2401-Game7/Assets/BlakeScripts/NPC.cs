@@ -87,7 +87,7 @@ public class NPC : MonoBehaviour
         hit = Physics2D.Raycast(this.transform.position, moveDirection, _coneLength, LayerMask.GetMask("Obstacle"));
         if(hit)
         {
-            float distanceScale = (hit.transform.position - transform.position).magnitude/11.0f;
+            float distanceScale = (hit.transform.position - transform.position).magnitude/_coneLength;
             _visionCone.transform.localScale = new Vector3 (distanceScale, distanceScale, distanceScale);
         }
     }
@@ -195,9 +195,12 @@ public class NPC : MonoBehaviour
     {
         PlayerController player = _player.GetComponent<PlayerController>();
 
-        if(PlayerIsVisible(player))
+        if(collision.tag == "Player")
         {
-            SetState(Chasing());
+            if (PlayerIsVisible(player))
+            {
+                SetState(Chasing());
+            }
         }
     }
 
@@ -215,6 +218,7 @@ public class NPC : MonoBehaviour
     {
         if(collision.gameObject.tag == "Player")
         {
+            Debug.Log("got");
             GameManager.Instance.Lose();
         }
     }
