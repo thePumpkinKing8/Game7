@@ -23,7 +23,7 @@ public class Collectable : Interactable
             NPC enemy = collider.GetComponent<NPC>();
             if (enemy != null)
             {
-                Debug.Log("fuck");
+                Debug.Log("unoffensive word");
                enemy.Investigate(transform.position);              
             }
         }
