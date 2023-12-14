@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
     public void NextScene()
     {
         Debug.Log("next scene");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void Lose()
@@ -71,7 +72,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
         AudioManager.Instance.PlayCaught();
         yield return new WaitForSecondsRealtime(1.5f);
-        Time.timeScale = 0f;
+        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name); 
 
     }

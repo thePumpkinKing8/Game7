@@ -211,6 +211,14 @@ public class NPC : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Player")
+        {
+            GameManager.Instance.Lose();
+        }
+    }
+
 
     public void Investigate(Vector2 direction) // function triggered by "noises"
     {
