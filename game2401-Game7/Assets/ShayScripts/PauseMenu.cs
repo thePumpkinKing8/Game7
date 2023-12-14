@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _pauseMenuScreen;
+    private GameObject _pauseMenuDisplay;
 
     private bool _gamePaused;
 
@@ -29,11 +29,13 @@ public class PauseMenu : MonoBehaviour
         _resumeButton = GameObject.Find("Resume_Button"); // Reference to the resume button
         _mainMenuButton = GameObject.Find("MainMenu_Button"); // Reference to the main menu button
         _exitButton = GameObject.Find("Quit_Button"); // Reference to the exit button
+        _pauseMenuDisplay = GameObject.Find("Canvas_Paused"); // Reference to the pause menu display
     }
 
     void Start()
     {
-        _pauseMenuScreen.SetActive(false); // Hides the pause menu
+        _pauseMenuDisplay.SetActive(false); // Hides the pause menu
+        _gamePaused = false;
     }
 
     void Update()
@@ -71,30 +73,37 @@ public class PauseMenu : MonoBehaviour
 
     public void GamePause()
     {
-        _gamePaused = true;
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            _gamePaused = true;
 
-        OpenMenu();
+            OpenMenu();
 
-        Time.timeScale = 0f; // Freezes time
-        
+            Time.timeScale = 0f; // Freezes time
+
+        }
     }
 
     public void GameResume()
     {
-        _gamePaused = false;
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            _gamePaused = false;
 
-        CloseMenu();
+            CloseMenu();
 
-        Time.timeScale = 1f; // Resumes time
+            Time.timeScale = 1f; // Resumes time
+        }
+
     }
 
     private void OpenMenu()
     {
-        _pauseMenuScreen.SetActive(true); // Shows the pause menu
+        _pauseMenuDisplay.SetActive(true); // Shows the pause menu
     }
 
     private void CloseMenu()
     {
-        _pauseMenuScreen.SetActive(false); // Hide the pause menu
+        _pauseMenuDisplay.SetActive(false); // Hide the pause menu
     }
 }
