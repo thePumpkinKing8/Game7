@@ -13,11 +13,16 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    [SerializeField] AudioSource _UIClick;
+    [SerializeField] AudioSource _hmm;
     [SerializeField] AudioSource _squish;
     [SerializeField] AudioSource _pickUp;
     [SerializeField] AudioSource _rummage;
     [SerializeField] AudioSource _walking;
     [SerializeField] AudioSource _caught;
+    [SerializeField] AudioSource _mainMenuMusic;
+    [SerializeField] AudioSource _gameMusic;
+    [SerializeField] AudioSource _chaseMusic;
 
     void Awake()
     {
@@ -28,6 +33,31 @@ public class AudioManager : MonoBehaviour
         }
         _instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    public void PlayUIClick()
+    {
+        _UIClick.Play();
+    }
+
+    public void PlayMenuMusic()
+    {
+        _mainMenuMusic.Play();
+    }
+
+    public void PlayGameMusic()
+    {
+        _gameMusic.Play();
+    }
+
+    public void PlayChaseMusic()
+    {
+        _chaseMusic.Play();
+    }
+
+    public void PlayHmm()
+    {
+        _hmm.Play(); // Sound for when a person hears you. Might not use.
     }
 
     public void PlayFruit()
