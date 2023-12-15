@@ -84,7 +84,7 @@ public class NPC : MonoBehaviour
         if (moveDirection != Vector3.zero)
         {
             float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-            _visionCone.transform.rotation = Quaternion.Lerp(_visionCone.transform.rotation,Quaternion.AngleAxis(angle,Vector3.forward),3f); //change to lerp
+            _visionCone.transform.rotation = Quaternion.Lerp(_visionCone.transform.rotation,Quaternion.AngleAxis(angle,Vector3.forward),12f*Time.deltaTime); //change to lerp
         }
         _originalPosition = transform.position;
         

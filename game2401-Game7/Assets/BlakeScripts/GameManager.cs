@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour
     public void NextScene()
     {
         int nextScene = SceneManager.GetActiveScene().buildIndex + 1;
+        _score = 0;
         SceneManager.LoadScene(nextScene);
     }
 
