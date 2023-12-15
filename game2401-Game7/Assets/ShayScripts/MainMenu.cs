@@ -30,6 +30,7 @@ public class MainMenu : MonoBehaviour
     private void Start()
     {
         _controlsScreen.SetActive(false); // Hides the controls screen
+        AudioManager.Instance.PlayMenuMusic();
     }
 
     void Update()

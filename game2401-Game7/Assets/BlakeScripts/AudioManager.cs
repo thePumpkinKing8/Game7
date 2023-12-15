@@ -42,17 +42,27 @@ public class AudioManager : MonoBehaviour
 
     public void PlayMenuMusic()
     {
+        _gameMusic.Stop();
+        _chaseMusic.Stop();
         _mainMenuMusic.Play();
     }
 
     public void PlayGameMusic()
     {
         _gameMusic.Play();
+        _chaseMusic.Stop();
+        _mainMenuMusic.Stop();
     }
 
     public void PlayChaseMusic()
     {
-        _chaseMusic.Play();
+        if (!_chaseMusic.isPlaying)
+        {
+            _chaseMusic.Play();
+            _gameMusic.Stop();
+            _mainMenuMusic.Stop();
+        }
+        
     }
 
     public void PlayHmm()

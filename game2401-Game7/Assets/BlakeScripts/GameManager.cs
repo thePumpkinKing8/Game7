@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    [SerializeField] private int _maxScore = 1000;
+    [SerializeField] public int _maxScore = 1000;
     private int _score = 0;
     public int Score
     {
@@ -57,9 +57,8 @@ public class GameManager : MonoBehaviour
 
     public void NextScene()
     {
-        Debug.Log("next scene");
-        _score = 0;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        int nextScene = SceneManager.GetActiveScene().buildIndex + 1;
+        SceneManager.LoadScene(nextScene);
     }
 
     public void Lose()
@@ -76,4 +75,5 @@ public class GameManager : MonoBehaviour
         _score = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name); 
     }
+    
 }

@@ -13,7 +13,7 @@ public class ScoreManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _text.text = "Score " + GameManager.Instance.Score;
+        _text.text = "Score " + GameManager.Instance.Score + "/" + GameManager.Instance._maxScore;
     }
 
 }

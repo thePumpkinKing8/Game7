@@ -4,6 +4,10 @@ using UnityEngine;
 using Pathfinding;
 public class NPC : MonoBehaviour
 {
+    [SerializeField] private GameObject _question;
+    [SerializeField] private GameObject _exclaim;
+    private Animator _animator;
+    private Vector3 _lastDirection;
     private GameObject _player;
     private AIPath _path;
     private AIDestinationSetter _destinationSetter;
@@ -12,6 +16,7 @@ public class NPC : MonoBehaviour
     private int _routeIndex = 1; //the index of the transform the NPC should path to while on patrol
 
     private Coroutine _currentState;
+    private bool _isChasing;
 
     [SerializeField] private float _speed = 1f;
     [SerializeField] private float _chaseSpeed = 4f;
@@ -25,6 +30,9 @@ public class NPC : MonoBehaviour
     private Vector3 _originalPosition;
     private void Awake()
     {
+        _question.SetActive(false);
+        _exclaim.SetActive(false);
+        _animator = GetComponentInChildren<Animator>();
         _player = GameObject.Find("Player"); // Reference to the player
         _seeker = GetComponent<Seeker>();
         _path = GetComponent<AIPath>();
@@ -64,8 +72,9 @@ public class NPC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SetState(Search());
+        SetState(OnPatrol());
         _originalPosition = transform.position;
+        PlayerIsVisible(_player.GetComponent<PlayerController>());
     }
 
     // Update is called once per frame
@@ -75,10 +84,36 @@ public class NPC : MonoBehaviour
         if (moveDirection != Vector3.zero)
         {
             float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-            _visionCone.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward); //change to lerp
+            _visionCone.transform.rotation = Quaternion.Slerp(_visionCone.transform.rotation,Quaternion.AngleAxis(angle,Vector3.forward),3f); //change to lerp
         }
         _originalPosition = transform.position;
-        ConeScale(moveDirection);
+        
+
+        Vector3 velocity = _path.desiredVelocity;
+        //animation
+        if(velocity == Vector3.zero)
+        {
+            _animator.SetBool("Moving", false);
+            _animator.SetFloat("X", _lastDirection.normalized.x);
+            _animator.SetFloat("Y", _lastDirection.normalized.y);
+        }
+        else
+        {
+            _animator.SetBool("Moving", true);
+            _animator.SetFloat("X",velocity.normalized.x);
+            _animator.SetFloat("Y", velocity.normalized.y);
+            _lastDirection = velocity.normalized;
+        }
+        if(velocity.normalized.x < 0)
+        {
+            GetComponentInChildren<SpriteRenderer>().flipX = false;
+          
+        }
+        else
+        {
+            GetComponentInChildren<SpriteRenderer>().flipX = true;
+        }
+        ConeScale(velocity.normalized);
     }
 
     void ConeScale(Vector3 moveDirection)
@@ -87,13 +122,16 @@ public class NPC : MonoBehaviour
         hit = Physics2D.Raycast(this.transform.position, moveDirection, _coneLength, LayerMask.GetMask("Obstacle"));
         if(hit)
         {
-            float distanceScale = (hit.transform.position - transform.position).magnitude/_coneLength;
+            Vector3 point = hit.point;
+            float distanceScale = ( point - transform.position).magnitude/_coneLength;
             _visionCone.transform.localScale = new Vector3 (distanceScale, distanceScale, distanceScale);
         }
     }
 
     IEnumerator OnPatrol() //sets the target within the ai's patrol path
     {
+        _question.SetActive(false);
+        _exclaim.SetActive(false);
         Debug.Log("patrolling");
         _path.maxSpeed = _speed;
         yield return new WaitForFixedUpdate();
@@ -125,6 +163,10 @@ public class NPC : MonoBehaviour
 
     IEnumerator Chasing() //Ai chases the player for as long as they remain visible to it
     {
+        _isChasing = true;
+        AudioManager.Instance.PlayChaseMusic();
+        _question.SetActive(false);
+        _exclaim.SetActive(true);
         Debug.Log("chasing");
         PlayerController player = _player.GetComponent<PlayerController>();
         while(true)
@@ -140,13 +182,15 @@ public class NPC : MonoBehaviour
                 yield return new WaitForSeconds(2);
                 if(!PlayerIsVisible(player))
                 {
+                    AudioManager.Instance.PlayGameMusic();
+                    _isChasing = false;
                     SetState(Search());
                 }
             }
         }
-       
 
-           
+
+
         //while (_playerVisible == true)
         //{
         //    yield return new WaitForFixedUpdate();
@@ -155,11 +199,14 @@ public class NPC : MonoBehaviour
         //        _playerVisible = false;
         //    }
         //    else
-                 
+        _isChasing = false;      
     }
 
     IEnumerator MoveToSearch()  //Ai moves to investigate noises
     {
+        AudioManager.Instance.PlayHmm();
+        _question.SetActive(true);
+        _exclaim.SetActive(false);
         Debug.Log("investigate");
         _path.maxSpeed = _speed;
         while (true)
@@ -174,6 +221,8 @@ public class NPC : MonoBehaviour
 
     IEnumerator Search() 
     {
+        _question.SetActive(true);
+        _exclaim.SetActive(false);
         Debug.Log("searching");
         yield return new WaitForSeconds(_searchTime);
         SetState(OnPatrol());
@@ -227,9 +276,9 @@ public class NPC : MonoBehaviour
     public void Investigate(Vector2 direction) // function triggered by "noises"
     {
         PlayerController player = _player.GetComponent<PlayerController>();
-
-        if (!PlayerIsVisible(player)) //prevents player from stopping a chase by making noise
+        if (!_isChasing) //prevents player from stopping a chase by making noise
         {
+            Debug.Log("hi");
             _destinationSetter.target.position = direction;
             SetState(MoveToSearch());
         }
