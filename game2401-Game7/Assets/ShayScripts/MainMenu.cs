@@ -45,17 +45,20 @@ public class MainMenu : MonoBehaviour
 
     public void OnPlayPress()
     {
+        AudioManager.Instance.PlayUIClick();
         SceneManager.LoadScene("Level1"); // Loads the first level
     }
 
     public void OnControlsPress()
     {
+        AudioManager.Instance.PlayUIClick();
         _controlsScreen.SetActive(true); // Shows the controls screen
         _controlsOpen = true; // Flags the controls screen as being open
     }
 
     public void OnExitPress()
     {
+        AudioManager.Instance.PlayUIClick();
         Debug.Log("Quitting game...");
         Application.Quit(); // Quits the game
     }
