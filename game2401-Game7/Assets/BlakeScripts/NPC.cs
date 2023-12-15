@@ -16,6 +16,7 @@ public class NPC : MonoBehaviour
     private int _routeIndex = 1; //the index of the transform the NPC should path to while on patrol
 
     private Coroutine _currentState;
+    private bool _isChasing;
 
     [SerializeField] private float _speed = 1f;
     [SerializeField] private float _chaseSpeed = 4f;
@@ -73,6 +74,7 @@ public class NPC : MonoBehaviour
     {
         SetState(OnPatrol());
         _originalPosition = transform.position;
+        PlayerIsVisible(_player.GetComponent<PlayerController>());
     }
 
     // Update is called once per frame
@@ -161,6 +163,7 @@ public class NPC : MonoBehaviour
 
     IEnumerator Chasing() //Ai chases the player for as long as they remain visible to it
     {
+        _isChasing = true;
         AudioManager.Instance.PlayChaseMusic();
         _question.SetActive(false);
         _exclaim.SetActive(true);
@@ -180,13 +183,14 @@ public class NPC : MonoBehaviour
                 if(!PlayerIsVisible(player))
                 {
                     AudioManager.Instance.PlayGameMusic();
+                    _isChasing = false;
                     SetState(Search());
                 }
             }
         }
-       
 
-           
+
+
         //while (_playerVisible == true)
         //{
         //    yield return new WaitForFixedUpdate();
@@ -195,7 +199,7 @@ public class NPC : MonoBehaviour
         //        _playerVisible = false;
         //    }
         //    else
-                 
+        _isChasing = false;      
     }
 
     IEnumerator MoveToSearch()  //Ai moves to investigate noises
@@ -272,8 +276,9 @@ public class NPC : MonoBehaviour
     public void Investigate(Vector2 direction) // function triggered by "noises"
     {
         PlayerController player = _player.GetComponent<PlayerController>();
-        if (!PlayerIsVisible(player)) //prevents player from stopping a chase by making noise
+        if (!_isChasing) //prevents player from stopping a chase by making noise
         {
+            Debug.Log("hi");
             _destinationSetter.target.position = direction;
             SetState(MoveToSearch());
         }
