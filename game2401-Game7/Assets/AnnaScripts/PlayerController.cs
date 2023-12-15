@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
 
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
+    private Vector2 _idleDirection;
     private void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -23,12 +24,16 @@ public class PlayerController : MonoBehaviour
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
-        
         //animation
         _animator.SetFloat("X", horizontalInput);
         _animator.SetFloat("Y", verticalInput);
+        if (horizontalInput != 0 || verticalInput != 0)
+        {
+            Debug.Log("fuck");
+            _idleDirection = new Vector2(horizontalInput, verticalInput);
+        }
 
-        if(horizontalInput != 0 || verticalInput != 0)
+        if (horizontalInput != 0 || verticalInput != 0)
         {
             _animator.SetBool("Moving", true);
             if(horizontalInput > 0)
@@ -43,6 +48,8 @@ public class PlayerController : MonoBehaviour
         else
         {
             _animator.SetBool("Moving", false);
+            _animator.SetFloat("X", _idleDirection.x);
+            _animator.SetFloat("Y", _idleDirection.y);
         }
 
 
@@ -74,6 +81,7 @@ public class PlayerController : MonoBehaviour
             Rummage rummage = collider.GetComponent<Rummage>();
             if (interactable != null)
             {
+                _animator.SetTrigger("Rummage");
                 interactable.Interact();
                 if (Input.GetKey(KeyCode.Space) && rummage != null) //starts the rummage coroutine if the interactable can be rummaged through
                 {
@@ -89,6 +97,7 @@ public class PlayerController : MonoBehaviour
         while (Input.GetKey(KeyCode.Space))
         {
             yield return new WaitForSeconds(1);
+            _animator.SetTrigger("Rummage");
             interact.Interact();
             
         }

@@ -57,17 +57,20 @@ public class PauseMenu : MonoBehaviour
 
     public void OnResumePress()
     {
+        AudioManager.Instance.PlayUIClick();
         GameResume(); // Resumes the game when the Resume button is pressed.
     }
 
     public void OnMainMenuPress()
     {
+        AudioManager.Instance.PlayUIClick();
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu"); // Loads the Main Menu scene
     }
 
     public void OnExitPress()
     {
+        AudioManager.Instance.PlayUIClick();
         Debug.Log("Quitting game...");
         Application.Quit(); // Quits the game
     }
