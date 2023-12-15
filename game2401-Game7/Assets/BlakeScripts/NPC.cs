@@ -4,6 +4,8 @@ using UnityEngine;
 using Pathfinding;
 public class NPC : MonoBehaviour
 {
+    private Animator _animator;
+    private Vector3 _lastDirection;
     private GameObject _player;
     private AIPath _path;
     private AIDestinationSetter _destinationSetter;
@@ -25,6 +27,7 @@ public class NPC : MonoBehaviour
     private Vector3 _originalPosition;
     private void Awake()
     {
+        _animator = GetComponentInChildren<Animator>();
         _player = GameObject.Find("Player"); // Reference to the player
         _seeker = GetComponent<Seeker>();
         _path = GetComponent<AIPath>();
@@ -75,10 +78,36 @@ public class NPC : MonoBehaviour
         if (moveDirection != Vector3.zero)
         {
             float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-            _visionCone.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward); //change to lerp
+            _visionCone.transform.rotation = Quaternion.Slerp(_visionCone.transform.rotation,Quaternion.AngleAxis(angle,Vector3.forward),3f); //change to lerp
         }
         _originalPosition = transform.position;
-        ConeScale(moveDirection);
+        
+
+        Vector3 velocity = _path.desiredVelocity;
+        //animation
+        if(velocity == Vector3.zero)
+        {
+            _animator.SetBool("Moving", false);
+            _animator.SetFloat("X", _lastDirection.normalized.x);
+            _animator.SetFloat("Y", _lastDirection.normalized.y);
+        }
+        else
+        {
+            _animator.SetBool("Moving", true);
+            _animator.SetFloat("X",velocity.normalized.x);
+            _animator.SetFloat("Y", velocity.normalized.y);
+            _lastDirection = velocity.normalized;
+        }
+        if(velocity.normalized.x < 0)
+        {
+            GetComponentInChildren<SpriteRenderer>().flipX = false;
+          
+        }
+        else
+        {
+            GetComponentInChildren<SpriteRenderer>().flipX = true;
+        }
+        ConeScale(velocity.normalized);
     }
 
     void ConeScale(Vector3 moveDirection)
@@ -87,7 +116,8 @@ public class NPC : MonoBehaviour
         hit = Physics2D.Raycast(this.transform.position, moveDirection, _coneLength, LayerMask.GetMask("Obstacle"));
         if(hit)
         {
-            float distanceScale = (hit.transform.position - transform.position).magnitude/_coneLength;
+            Vector3 point = hit.point;
+            float distanceScale = ( point - transform.position).magnitude/_coneLength;
             _visionCone.transform.localScale = new Vector3 (distanceScale, distanceScale, distanceScale);
         }
     }
