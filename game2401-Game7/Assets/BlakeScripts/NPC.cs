@@ -84,7 +84,7 @@ public class NPC : MonoBehaviour
         if (moveDirection != Vector3.zero)
         {
             float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-            _visionCone.transform.rotation = Quaternion.Slerp(_visionCone.transform.rotation,Quaternion.AngleAxis(angle,Vector3.forward),3f); //change to lerp
+            _visionCone.transform.rotation = Quaternion.Lerp(_visionCone.transform.rotation,Quaternion.AngleAxis(angle,Vector3.forward),3f); //change to lerp
         }
         _originalPosition = transform.position;
         
@@ -188,18 +188,6 @@ public class NPC : MonoBehaviour
                 }
             }
         }
-
-
-
-        //while (_playerVisible == true)
-        //{
-        //    yield return new WaitForFixedUpdate();
-        //    if (_playerTarget.GetComponent<PlayerController>().Hidden == true)
-        //    {
-        //        _playerVisible = false;
-        //    }
-        //    else
-        _isChasing = false;      
     }
 
     IEnumerator MoveToSearch()  //Ai moves to investigate noises
@@ -227,18 +215,6 @@ public class NPC : MonoBehaviour
         yield return new WaitForSeconds(_searchTime);
         SetState(OnPatrol());
     }
-
-
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    //Debug.Log("hi");
-    //    if(collision.gameObject.tag == "Player")
-    //    {
-    //        _playerTarget = collision.gameObject.GetComponent<Transform>();
-    //        _playerVisible = true;
-    //        SetState(Chasing());
-    //    }
-    //}
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
