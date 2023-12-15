@@ -19,6 +19,10 @@ public class PlayerController : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
         oldSpeed = moveSpeed;
     }
+    private void Start()
+    {
+        AudioManager.Instance.PlayGameMusic();
+    }
 
     private void Update()
     {
@@ -29,7 +33,6 @@ public class PlayerController : MonoBehaviour
         _animator.SetFloat("Y", verticalInput);
         if (horizontalInput != 0 || verticalInput != 0)
         {
-            Debug.Log("fuck");
             _idleDirection = new Vector2(horizontalInput, verticalInput);
         }
 
@@ -107,26 +110,24 @@ public class PlayerController : MonoBehaviour
 
 
     //hides the player from the ai and places the player at/under the object
-    public void Hide(GameObject _gameObject)
+    public void Hide()
     {
-        if(Hidden == true)
-        {
-            Debug.Log("unHidden");
-            Hidden = false;
-            transform.position = _position;
-            GetComponent<Collider2D>().enabled = true;
-            moveSpeed = oldSpeed;
-            _spriteRenderer.sortingOrder = 2;
-        }
-        else
-        {
-            Hidden = true;
-            _spriteRenderer.sortingOrder=0;
-            GetComponent<Collider2D>().enabled = false;
-            _position = transform.position;
-            transform.position = _gameObject.transform.position;
-            moveSpeed = 0;
-        }
+        
+        oldSpeed = moveSpeed;
+        Hidden = true;
+        Debug.Log(Hidden);
+        GetComponent<Collider2D>().enabled = false;
+        _spriteRenderer.enabled = false;
+        moveSpeed = 0;
+        
+    }
+    public void UnHide()
+    {
+        Hidden = false;
+        Debug.Log(Hidden);
+        GetComponent<Collider2D>().enabled = true;
+        _spriteRenderer.enabled = true;
+        moveSpeed = oldSpeed;
     }
 
 }

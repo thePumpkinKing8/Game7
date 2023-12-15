@@ -127,5 +127,5 @@ MonoBehaviour:
   onInteract:
     m_PersistentCalls:
       m_Calls: []
-  _value: 50
+  _value: 25
   _soundSize: 10

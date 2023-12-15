@@ -128,4 +128,5 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _value: 100
-  _soundSize: 50
+  _soundSize: 5
+  _isSquishy: 0

@@ -4,6 +4,8 @@ using UnityEngine;
 using Pathfinding;
 public class NPC : MonoBehaviour
 {
+    [SerializeField] private GameObject _question;
+    [SerializeField] private GameObject _exclaim;
     private Animator _animator;
     private Vector3 _lastDirection;
     private GameObject _player;
@@ -27,6 +29,8 @@ public class NPC : MonoBehaviour
     private Vector3 _originalPosition;
     private void Awake()
     {
+        _question.SetActive(false);
+        _exclaim.SetActive(false);
         _animator = GetComponentInChildren<Animator>();
         _player = GameObject.Find("Player"); // Reference to the player
         _seeker = GetComponent<Seeker>();
@@ -67,7 +71,7 @@ public class NPC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SetState(Search());
+        SetState(OnPatrol());
         _originalPosition = transform.position;
     }
 
@@ -124,6 +128,8 @@ public class NPC : MonoBehaviour
 
     IEnumerator OnPatrol() //sets the target within the ai's patrol path
     {
+        _question.SetActive(false);
+        _exclaim.SetActive(false);
         Debug.Log("patrolling");
         _path.maxSpeed = _speed;
         yield return new WaitForFixedUpdate();
@@ -155,6 +161,9 @@ public class NPC : MonoBehaviour
 
     IEnumerator Chasing() //Ai chases the player for as long as they remain visible to it
     {
+        AudioManager.Instance.PlayChaseMusic();
+        _question.SetActive(false);
+        _exclaim.SetActive(true);
         Debug.Log("chasing");
         PlayerController player = _player.GetComponent<PlayerController>();
         while(true)
@@ -170,6 +179,7 @@ public class NPC : MonoBehaviour
                 yield return new WaitForSeconds(2);
                 if(!PlayerIsVisible(player))
                 {
+                    AudioManager.Instance.PlayGameMusic();
                     SetState(Search());
                 }
             }
@@ -190,6 +200,9 @@ public class NPC : MonoBehaviour
 
     IEnumerator MoveToSearch()  //Ai moves to investigate noises
     {
+        AudioManager.Instance.PlayHmm();
+        _question.SetActive(true);
+        _exclaim.SetActive(false);
         Debug.Log("investigate");
         _path.maxSpeed = _speed;
         while (true)
@@ -204,6 +217,8 @@ public class NPC : MonoBehaviour
 
     IEnumerator Search() 
     {
+        _question.SetActive(true);
+        _exclaim.SetActive(false);
         Debug.Log("searching");
         yield return new WaitForSeconds(_searchTime);
         SetState(OnPatrol());
@@ -257,7 +272,6 @@ public class NPC : MonoBehaviour
     public void Investigate(Vector2 direction) // function triggered by "noises"
     {
         PlayerController player = _player.GetComponent<PlayerController>();
-
         if (!PlayerIsVisible(player)) //prevents player from stopping a chase by making noise
         {
             _destinationSetter.target.position = direction;
